@@ -1,0 +1,40 @@
+version: 3.9
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+    api:
+      ports:
+        - 5001:5001
+      volumes:
+        - .:/usr/app/src
+        - ./docker-compose/app:/usr/app
+      build:
+        context: .
+        dockerfile: dev.Dockerfile
+      networks:
+        - backend
+
+    postgres:
+      image: postgres:14.8
+      environment:
+        POSTGRES_USER: ${DB_USERNAME}
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+      ports:
+        - 5432:5432
+      volumes:
+        - ./docker-compose/postgres:/data/db
+      networks:
+        - backend
+
+    redis:
+      image: redis:7.0-alpine
+      ports:
+        - 6379:6379
+      volumes:
+        - ./docker-compose/redis-data:/data
+      command: redis-server --save 60 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+      networks:
+        - backend
