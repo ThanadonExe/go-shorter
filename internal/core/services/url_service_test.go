@@ -15,9 +15,10 @@ func TestGetURLByIDNotFound(t *testing.T) {
 	repo := repositories.NewUrlRepositoryMock()
 	service := services.NewUrlService(repo)
 
-	_, err := service.GetById(9999)
+	u, err := service.GetById(9999)
 
 	assert.Error(t, err, "should error")
+	assert.Empty(t, u, "must be empty")
 }
 
 func TestGetURLByIDFound(t *testing.T) {
@@ -93,6 +94,8 @@ func TestDeleteURLShouldNotFindInDB(t *testing.T) {
 	err := service.Delete(id)
 	assert.NoError(t, err, "should not error")
 
-	_, err = service.GetById(id)
+	u, err := service.GetById(id)
+
 	assert.Error(t, err, "should error")
+	assert.Empty(t, u, "must be empty")
 }

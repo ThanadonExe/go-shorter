@@ -9,6 +9,7 @@ A URL shortener service - my minimal self learning project
 - DB migrations with [migrate](https://github.com/golang-migrate/migrate/)
 - JWT Authentication
 - Loading env config with [viper](https://github.com/spf13/viper)
+- Testing
 
 ## Usage
 
